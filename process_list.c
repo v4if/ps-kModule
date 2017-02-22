@@ -5,12 +5,14 @@
 
 MODULE_LICENSE("Dual BSD/GPL");
 
+/** * 根据当前进程深度，补充树状显示左侧的空白和| **/
 static void pad_blank(int depth) {
     while(depth--) {
         printk("\t|");
     }
 }
 
+/** * 递归遍历进程描述符 * params: parent 父进程描述符 *         depth 当前进程相对于init_task的深度 * return  当前系统进程数 **/
 static int walk(struct task_struct *parent, int depth) {
     int ret = 0;
 
@@ -34,6 +36,7 @@ static int walk(struct task_struct *parent, int depth) {
     return ret;
 }
 
+/** * 内核module入口点 **/
 static int _ps_list_init(void) {
     int count = walk(&init_task, 0);
     printk(KERN_EMERG "the number of process is %d\n", count);
